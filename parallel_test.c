@@ -1,14 +1,15 @@
 #include <stdio.h>
 #include <omp.h>
+#include <math.h>
 
-#define F(x) 4.0 / (1.0 + x * x)  // вычисляет пи. для проверки корректности работы. Точность более-менее
-#define A 0.0
-#define B 1.0
+#define F(x) cos(pow(x, 1.04) * atan(5.2 * exp(x + 2.3))) + log(fabs(pow(x, 4.3) + asin(-0.4)*pow(1.0013, 13.001))) + atan(acos(1/x) + 7)
+#define A 2.0
+#define B 5.0
 #define NT 8
 
 int main ()
 {
-    int segnum = 1000, i;
+    int segnum = 1000000, i;
     double res = 0.0, x_l, x_r, x_mid;
     double step_size = (B - A) / (double) segnum; // на каждом сегменте есть промежуточная точка в середине. эти точки за границы сегмента не считаем
     #pragma omp parallel default (none) private (i, x_l, x_r, x_mid) shared (segnum, step_size) reduction(+: res) //num_treads(NT)
