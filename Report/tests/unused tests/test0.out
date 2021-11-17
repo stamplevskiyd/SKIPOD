@@ -1,0 +1,125 @@
+Sender: LSF System <lsfadmin@polus-c3-ib.bmc.hpc.cs.msu.ru>
+Subject: Job 815350: <# LSBATCH: User input;# this file was automaticly created by mpisubmit.pl script for edu-cmc-skpod21-321-13 #;source /polusfs/setenv/setup.SMPI;#BSUB -n 1;#BSUB -W 00:15;#BSUB -o task.out.%J.out;#BSUB -e task.out.%J.err;OMP_NUM_THREADS=1 mpiexec ./task.out 1;OMP_NUM_THREADS=2 mpiexec ./task.out 2;OMP_NUM_THREADS=4 mpiexec ./task.out 4;OMP_NUM_THREADS=8 mpiexec ./task.out 8;OMP_NUM_THREADS=16 mpiexec ./task.out 16;OMP_NUM_THREADS=32 mpiexec ./task.out 32;OMP_NUM_THREADS=64 mpiexec ./task.out 64> in cluster <MSUCluster> Done
+
+Job <# LSBATCH: User input;# this file was automaticly created by mpisubmit.pl script for edu-cmc-skpod21-321-13 #;source /polusfs/setenv/setup.SMPI;#BSUB -n 1;#BSUB -W 00:15;#BSUB -o task.out.%J.out;#BSUB -e task.out.%J.err;OMP_NUM_THREADS=1 mpiexec ./task.out 1;OMP_NUM_THREADS=2 mpiexec ./task.out 2;OMP_NUM_THREADS=4 mpiexec ./task.out 4;OMP_NUM_THREADS=8 mpiexec ./task.out 8;OMP_NUM_THREADS=16 mpiexec ./task.out 16;OMP_NUM_THREADS=32 mpiexec ./task.out 32;OMP_NUM_THREADS=64 mpiexec ./task.out 64> was submitted from host <polus-ib.bmc.hpc.cs.msu.ru> by user <edu-cmc-skpod21-321-13> in cluster <MSUCluster> at Thu Nov 11 22:10:57 2021
+Job was executed on host(s) <polus-c3-ib.bmc.hpc.cs.msu.ru>, in queue <short>, as user <edu-cmc-skpod21-321-13> in cluster <MSUCluster> at Thu Nov 11 22:10:57 2021
+</home_edu/edu-cmc-skpod21-321/edu-cmc-skpod21-321-13> was used as the home directory.
+</home_edu/edu-cmc-skpod21-321/edu-cmc-skpod21-321-13/working_catalog> was used as the working directory.
+Started at Thu Nov 11 22:10:57 2021
+Terminated at Thu Nov 11 22:22:36 2021
+Results reported at Thu Nov 11 22:22:36 2021
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+# LSBATCH: User input
+# this file was automaticly created by mpisubmit.pl script for edu-cmc-skpod21-321-13 #
+source /polusfs/setenv/setup.SMPI
+#BSUB -n 1
+#BSUB -W 00:15
+#BSUB -o task.out.%J.out
+#BSUB -e task.out.%J.err
+OMP_NUM_THREADS=1 mpiexec ./task.out 1
+OMP_NUM_THREADS=2 mpiexec ./task.out 2
+OMP_NUM_THREADS=4 mpiexec ./task.out 4
+OMP_NUM_THREADS=8 mpiexec ./task.out 8
+OMP_NUM_THREADS=16 mpiexec ./task.out 16
+OMP_NUM_THREADS=32 mpiexec ./task.out 32
+OMP_NUM_THREADS=64 mpiexec ./task.out 64
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   3749.01 sec.
+    Max Memory :                                 27 MB
+    Average Memory :                             19.61 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              5
+    Max Threads :                                73
+    Run time :                                   703 sec.
+    Turnaround time :                            699 sec.
+
+The output (if any) follows:
+
+Thread number: 1, segment number: 262144, execution time, 0.331690, result: 39.8671121783
+Thread number: 1, segment number: 524288, execution time, 0.646558, result: 39.8671121783
+Thread number: 1, segment number: 1048576, execution time, 1.292633, result: 39.8671121783
+Thread number: 1, segment number: 2097152, execution time, 2.585467, result: 39.8671121783
+Thread number: 1, segment number: 4194304, execution time, 5.172563, result: 39.8671121783
+Thread number: 1, segment number: 8388608, execution time, 10.345966, result: 39.8671121783
+Thread number: 1, segment number: 16777216, execution time, 20.691894, result: 39.8671121783
+Thread number: 1, segment number: 33554432, execution time, 41.381024, result: 39.8671121783
+Thread number: 1, segment number: 67108864, execution time, 82.762777, result: 39.8671121783
+Thread number: 1, segment number: 134217728, execution time, 165.600954, result: 39.8671121783
+Thread number: 2, segment number: 262144, execution time, 0.171029, result: 39.8671121783
+Thread number: 2, segment number: 524288, execution time, 0.326628, result: 39.8671121783
+Thread number: 2, segment number: 1048576, execution time, 0.653068, result: 39.8671121783
+Thread number: 2, segment number: 2097152, execution time, 1.306692, result: 39.8671121783
+Thread number: 2, segment number: 4194304, execution time, 2.615283, result: 39.8671121783
+Thread number: 2, segment number: 8388608, execution time, 5.226440, result: 39.8671121783
+Thread number: 2, segment number: 16777216, execution time, 10.455500, result: 39.8671121783
+Thread number: 2, segment number: 33554432, execution time, 20.919000, result: 39.8671121783
+Thread number: 2, segment number: 67108864, execution time, 41.844777, result: 39.8671121783
+Thread number: 2, segment number: 134217728, execution time, 83.077502, result: 39.8671121783
+Thread number: 4, segment number: 262144, execution time, 0.090869, result: 39.8671121783
+Thread number: 4, segment number: 524288, execution time, 0.166402, result: 39.8671121783
+Thread number: 4, segment number: 1048576, execution time, 0.332482, result: 39.8671121783
+Thread number: 4, segment number: 2097152, execution time, 0.665056, result: 39.8671121783
+Thread number: 4, segment number: 4194304, execution time, 1.330087, result: 39.8671121783
+Thread number: 4, segment number: 8388608, execution time, 2.660632, result: 39.8671121783
+Thread number: 4, segment number: 16777216, execution time, 5.321278, result: 39.8671121783
+Thread number: 4, segment number: 33554432, execution time, 10.660990, result: 39.8671121783
+Thread number: 4, segment number: 67108864, execution time, 21.281905, result: 39.8671121783
+Thread number: 4, segment number: 134217728, execution time, 42.576443, result: 39.8671121783
+Thread number: 8, segment number: 262144, execution time, 0.051655, result: 39.8671121783
+Thread number: 8, segment number: 524288, execution time, 0.087177, result: 39.8671121783
+Thread number: 8, segment number: 1048576, execution time, 0.174109, result: 39.8671121783
+Thread number: 8, segment number: 2097152, execution time, 0.348496, result: 39.8671121783
+Thread number: 8, segment number: 4194304, execution time, 0.696551, result: 39.8671121783
+Thread number: 8, segment number: 8388608, execution time, 1.394590, result: 39.8671121783
+Thread number: 8, segment number: 16777216, execution time, 2.790452, result: 39.8671121783
+Thread number: 8, segment number: 33554432, execution time, 5.578361, result: 39.8671121783
+Thread number: 8, segment number: 67108864, execution time, 11.153743, result: 39.8671121783
+Thread number: 8, segment number: 134217728, execution time, 22.301633, result: 39.8671121783
+Thread number: 16, segment number: 262144, execution time, 0.036403, result: 39.8671121783
+Thread number: 16, segment number: 524288, execution time, 0.056734, result: 39.8671121783
+Thread number: 16, segment number: 1048576, execution time, 0.113359, result: 39.8671121783
+Thread number: 16, segment number: 2097152, execution time, 0.226928, result: 39.8671121783
+Thread number: 16, segment number: 4194304, execution time, 0.453527, result: 39.8671121783
+Thread number: 16, segment number: 8388608, execution time, 0.907743, result: 39.8671121783
+Thread number: 16, segment number: 16777216, execution time, 1.815881, result: 39.8671121783
+Thread number: 16, segment number: 33554432, execution time, 3.634042, result: 39.8671121783
+Thread number: 16, segment number: 67108864, execution time, 7.262269, result: 39.8671121783
+Thread number: 16, segment number: 134217728, execution time, 14.513174, result: 39.8671121783
+Thread number: 32, segment number: 262144, execution time, 0.030710, result: 39.8671121783
+Thread number: 32, segment number: 524288, execution time, 0.043870, result: 39.8671121783
+Thread number: 32, segment number: 1048576, execution time, 0.087861, result: 39.8671121783
+Thread number: 32, segment number: 2097152, execution time, 0.175692, result: 39.8671121783
+Thread number: 32, segment number: 4194304, execution time, 0.351429, result: 39.8671121783
+Thread number: 32, segment number: 8388608, execution time, 0.702537, result: 39.8671121783
+Thread number: 32, segment number: 16777216, execution time, 1.405350, result: 39.8671121783
+Thread number: 32, segment number: 33554432, execution time, 2.810141, result: 39.8671121783
+Thread number: 32, segment number: 67108864, execution time, 5.619245, result: 39.8671121783
+Thread number: 32, segment number: 134217728, execution time, 11.225922, result: 39.8671121783
+Thread number: 64, segment number: 262144, execution time, 0.032122, result: 39.8671121783
+Thread number: 64, segment number: 524288, execution time, 0.036765, result: 39.8671121783
+Thread number: 64, segment number: 1048576, execution time, 0.073617, result: 39.8671121783
+Thread number: 64, segment number: 2097152, execution time, 0.147083, result: 39.8671121783
+Thread number: 64, segment number: 4194304, execution time, 0.294211, result: 39.8671121783
+Thread number: 64, segment number: 8388608, execution time, 0.588479, result: 39.8671121783
+Thread number: 64, segment number: 16777216, execution time, 1.176555, result: 39.8671121783
+Thread number: 64, segment number: 33554432, execution time, 2.352924, result: 39.8671121783
+Thread number: 64, segment number: 67108864, execution time, 4.707030, result: 39.8671121783
+Thread number: 64, segment number: 134217728, execution time, 9.413758, result: 39.8671121783
+
+
+PS:
+
+Read file <task.out.815350.err> for stderr output of this job.
+

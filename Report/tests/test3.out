@@ -1,0 +1,86 @@
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              5
+    Max Threads :                                169
+    Run time :                                   491 sec.
+    Turnaround time :                            490 sec.
+
+The output (if any) follows:
+
+Thread number: 60, segment number: 1073741824, execution time, 70.025866, result: 39.8671121783
+Thread number: 80, segment number: 1073741824, execution time, 63.365972, result: 39.8671121783
+Thread number: 100, segment number: 1073741824, execution time, 124.925514, result: 39.8671121783
+Thread number: 120, segment number: 1073741824, execution time, 92.719562, result: 39.8671121783
+Thread number: 140, segment number: 1073741824, execution time, 73.140407, result: 39.8671121783
+Thread number: 160, segment number: 1073741824, execution time, 64.149749, result: 39.8671121783
+
+
+PS:
+
+Read file <answers/res.out.817528.err> for stderr output of this job.
+
+[edu-cmc-skpod21-321-13@polus-ib modified]$ clear
+
+[edu-cmc-skpod21-321-13@polus-ib modified]$ cat answers/res.out.817528.out
+Sender: LSF System <lsfadmin@polus-c4-ib.bmc.hpc.cs.msu.ru>
+Subject: Job 817528: <# LSBATCH: User input;# this file was automaticly created by mpisubmit.pl script for edu-cmc-skpod21-321-13 #;source /polusfs/setenv/setup.SMPI;#BSUB -n 1;#BSUB -W 00:15;#BSUB -o answers/res.out.%J.out;#BSUB -e answers/res.out.%J.err; OMP_NUM_THREADS=60 mpiexec ./res.out 60;OMP_NUM_THREADS=80 mpiexec ./res.out 80;OMP_NUM_THREADS=100 mpiexec ./res.out 100;OMP_NUM_THREADS=120 mpiexec ./res.out 120;OMP_NUM_THREADS=140 mpiexec ./res.out 140;OMP_NUM_THREADS=160 mpiexec ./res.out 160> in cluster <MSUCluster> Done
+
+Job <# LSBATCH: User input;# this file was automaticly created by mpisubmit.pl script for edu-cmc-skpod21-321-13 #;source /polusfs/setenv/setup.SMPI;#BSUB -n 1;#BSUB -W 00:15;#BSUB -o answers/res.out.%J.out;#BSUB -e answers/res.out.%J.err; OMP_NUM_THREADS=60 mpiexec ./res.out 60;OMP_NUM_THREADS=80 mpiexec ./res.out 80;OMP_NUM_THREADS=100 mpiexec ./res.out 100;OMP_NUM_THREADS=120 mpiexec ./res.out 120;OMP_NUM_THREADS=140 mpiexec ./res.out 140;OMP_NUM_THREADS=160 mpiexec ./res.out 160> was submitted from host <polus-ib.bmc.hpc.cs.msu.ru> by user <edu-cmc-skpod21-321-13> in cluster <MSUCluster> at Sun Nov 14 13:26:41 2021
+Job was executed on host(s) <polus-c4-ib.bmc.hpc.cs.msu.ru>, in queue <short>, as user <edu-cmc-skpod21-321-13> in cluster <MSUCluster> at Sun Nov 14 13:26:41 2021
+</home_edu/edu-cmc-skpod21-321/edu-cmc-skpod21-321-13> was used as the home directory.
+</home_edu/edu-cmc-skpod21-321/edu-cmc-skpod21-321-13/working_catalog/modified> was used as the working directory.
+Started at Sun Nov 14 13:26:41 2021
+Terminated at Sun Nov 14 13:34:51 2021
+Results reported at Sun Nov 14 13:34:51 2021
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+# LSBATCH: User input
+# this file was automaticly created by mpisubmit.pl script for edu-cmc-skpod21-321-13 #
+source /polusfs/setenv/setup.SMPI
+#BSUB -n 1
+#BSUB -W 00:15
+#BSUB -o answers/res.out.%J.out
+#BSUB -e answers/res.out.%J.err
+
+OMP_NUM_THREADS=60 mpiexec ./res.out 60
+OMP_NUM_THREADS=80 mpiexec ./res.out 80
+OMP_NUM_THREADS=100 mpiexec ./res.out 100
+OMP_NUM_THREADS=120 mpiexec ./res.out 120
+OMP_NUM_THREADS=140 mpiexec ./res.out 140
+OMP_NUM_THREADS=160 mpiexec ./res.out 160
+
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   37659.92 sec.
+    Max Memory :                                 39 MB
+    Average Memory :                             32.36 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              5
+    Max Threads :                                169
+    Run time :                                   491 sec.
+    Turnaround time :                            490 sec.
+
+The output (if any) follows:
+
+Thread number: 60, segment number: 1073741824, execution time, 70.025866, result: 39.8671121783
+Thread number: 80, segment number: 1073741824, execution time, 63.365972, result: 39.8671121783
+Thread number: 100, segment number: 1073741824, execution time, 124.925514, result: 39.8671121783
+Thread number: 120, segment number: 1073741824, execution time, 92.719562, result: 39.8671121783
+Thread number: 140, segment number: 1073741824, execution time, 73.140407, result: 39.8671121783
+Thread number: 160, segment number: 1073741824, execution time, 64.149749, result: 39.8671121783
+
+
+PS:
+
+Read file <answers/res.out.817528.err> for stderr output of this job.
