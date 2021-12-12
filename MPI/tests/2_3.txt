@@ -1,0 +1,57 @@
+Sender: LSF System <lsfadmin@polus-c3-ib.bmc.hpc.cs.msu.ru>
+Subject: Job 833263: <# this file was automaticly created by mpisubmit.pl script for edu-cmc-skpod21-321-13 #;source /polusfs/setenv/setup.SMPI;#BSUB -n 2;#BSUB -W 00:10;#BSUB -o tests/test2_3;#BSUB -e prog.out.%J.err;OMP_NUM_THREADS=1 mpiexec prog.out> in cluster <MSUCluster> Done
+
+Job <# this file was automaticly created by mpisubmit.pl script for edu-cmc-skpod21-321-13 #;source /polusfs/setenv/setup.SMPI;#BSUB -n 2;#BSUB -W 00:10;#BSUB -o tests/test2_3;#BSUB -e prog.out.%J.err;OMP_NUM_THREADS=1 mpiexec prog.out> was submitted from host <polus-ib.bmc.hpc.cs.msu.ru> by user <edu-cmc-skpod21-321-13> in cluster <MSUCluster> at Sun Dec 12 15:14:17 2021
+Job was executed on host(s) <2*polus-c3-ib.bmc.hpc.cs.msu.ru>, in queue <short>, as user <edu-cmc-skpod21-321-13> in cluster <MSUCluster> at Sun Dec 12 15:14:18 2021
+</home_edu/edu-cmc-skpod21-321/edu-cmc-skpod21-321-13> was used as the home directory.
+</home_edu/edu-cmc-skpod21-321/edu-cmc-skpod21-321-13/MPI> was used as the working directory.
+Started at Sun Dec 12 15:14:18 2021
+Terminated at Sun Dec 12 15:17:17 2021
+Results reported at Sun Dec 12 15:17:17 2021
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+# this file was automaticly created by mpisubmit.pl script for edu-cmc-skpod21-321-13 #
+source /polusfs/setenv/setup.SMPI
+#BSUB -n 2
+#BSUB -W 00:10
+#BSUB -o tests/test2_3
+#BSUB -e prog.out.%J.err
+OMP_NUM_THREADS=1 mpiexec prog.out
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   355.95 sec.
+    Max Memory :                                 122 MB
+    Average Memory :                             116.50 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              6
+    Max Threads :                                15
+    Run time :                                   181 sec.
+    Turnaround time :                            180 sec.
+
+The output (if any) follows:
+
+Processes number: 2, Segment number: 262144, execution time, 0.187559, result: 39.8671121783
+Processes number: 2, Segment number: 524288, execution time, 0.344250, result: 39.8671121783
+Processes number: 2, Segment number: 1048576, execution time, 0.683217, result: 39.8671121783
+Processes number: 2, Segment number: 2097152, execution time, 1.363748, result: 39.8671121783
+Processes number: 2, Segment number: 4194304, execution time, 2.738135, result: 39.8671121783
+Processes number: 2, Segment number: 8388608, execution time, 5.425884, result: 39.8671121783
+Processes number: 2, Segment number: 16777216, execution time, 10.902768, result: 39.8671121783
+Processes number: 2, Segment number: 33554432, execution time, 22.029801, result: 39.8671121783
+Processes number: 2, Segment number: 67108864, execution time, 44.549429, result: 39.8671121783
+Processes number: 2, Segment number: 134217728, execution time, 89.553390, result: 39.8671121783
+
+
+PS:
+
+Read file <prog.out.833263.err> for stderr output of this job.

@@ -1,0 +1,74 @@
+Sender: LSF System <lsfadmin@polus-c4-ib.bmc.hpc.cs.msu.ru>
+Subject: Job 833363: <# this file was automaticly created by mpisubmit.pl script for edu-cmc-skpod21-321-13 #;source /polusfs/setenv/setup.SMPI;#BSUB -n 8;#BSUB -W 00:10;#BSUB -o tests/test8_4;#BSUB -e prog.out.%J.err;OMP_NUM_THREADS=1 mpiexec prog.out> in cluster <MSUCluster> Done
+
+Job <# this file was automaticly created by mpisubmit.pl script for edu-cmc-skpod21-321-13 #;source /polusfs/setenv/setup.SMPI;#BSUB -n 8;#BSUB -W 00:10;#BSUB -o tests/test8_4;#BSUB -e prog.out.%J.err;OMP_NUM_THREADS=1 mpiexec prog.out> was submitted from host <polus-ib.bmc.hpc.cs.msu.ru> by user <edu-cmc-skpod21-321-13> in cluster <MSUCluster> at Sun Dec 12 16:01:29 2021
+Job was executed on host(s) <1*polus-c4-ib.bmc.hpc.cs.msu.ru>, in queue <short>, as user <edu-cmc-skpod21-321-13> in cluster <MSUCluster> at Sun Dec 12 16:01:29 2021
+                            <1*polus-c1-ib.bmc.hpc.cs.msu.ru>
+                            <6*polus-c2-ib.bmc.hpc.cs.msu.ru>
+</home_edu/edu-cmc-skpod21-321/edu-cmc-skpod21-321-13> was used as the home directory.
+</home_edu/edu-cmc-skpod21-321/edu-cmc-skpod21-321-13/MPI> was used as the working directory.
+Started at Sun Dec 12 16:01:29 2021
+Terminated at Sun Dec 12 16:02:22 2021
+Results reported at Sun Dec 12 16:02:22 2021
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+# this file was automaticly created by mpisubmit.pl script for edu-cmc-skpod21-321-13 #
+source /polusfs/setenv/setup.SMPI
+#BSUB -n 8
+#BSUB -W 00:10
+#BSUB -o tests/test8_4
+#BSUB -e prog.out.%J.err
+OMP_NUM_THREADS=1 mpiexec prog.out
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   407.00 sec.
+    Max Memory :                                 71 MB
+    Average Memory :                             63.22 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              5
+    Max Threads :                                12
+    Run time :                                   54 sec.
+    Turnaround time :                            53 sec.
+
+The output (if any) follows:
+
+Processes number: 8, Segment number: 262144, execution time, 0.071269, result: 39.8671121783
+Processes number: 8, Segment number: 524288, execution time, 0.114068, result: 39.8671121783
+Processes number: 8, Segment number: 1048576, execution time, 0.227446, result: 39.8671121783
+Processes number: 8, Segment number: 2097152, execution time, 0.427113, result: 39.8671121783
+Processes number: 8, Segment number: 4194304, execution time, 0.871980, result: 39.8671121783
+Processes number: 8, Segment number: 8388608, execution time, 1.850421, result: 39.8671121783
+Processes number: 8, Segment number: 16777216, execution time, 3.565798, result: 39.8671121783
+Processes number: 8, Segment number: 33554432, execution time, 6.704720, result: 39.8671121783
+Processes number: 8, Segment number: 67108864, execution time, 13.001541, result: 39.8671121783
+Processes number: 8, Segment number: 134217728, execution time, 23.929486, result: 39.8671121783
+
+
+PS:
+
+Read file <prog.out.833363.err> for stderr output of this job.
+
+Processes number: 8, Segment number: 1048576, execution time, 0.227446, result: 39.8671121783
+Processes number: 8, Segment number: 2097152, execution time, 0.427113, result: 39.8671121783
+Processes number: 8, Segment number: 4194304, execution time, 0.871980, result: 39.8671121783
+Processes number: 8, Segment number: 8388608, execution time, 1.850421, result: 39.8671121783
+Processes number: 8, Segment number: 16777216, execution time, 3.565798, result: 39.8671121783
+Processes number: 8, Segment number: 33554432, execution time, 6.704720, result: 39.8671121783
+Processes number: 8, Segment number: 67108864, execution time, 13.001541, result: 39.8671121783
+Processes number: 8, Segment number: 134217728, execution time, 23.929486, result: 39.8671121783
+
+
+PS:
+
+Read file <prog.out.833363.err> for stderr output of this job.
+
