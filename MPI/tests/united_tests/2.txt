@@ -1,0 +1,133 @@
+Sender: LSF System <lsfadmin@polus-c1-ib.bmc.hpc.cs.msu.ru>
+Subject: Job 833739: <source /polusfs/setenv/setup.SMPI;#BSUB -n 80;#BSUB -W 00:15;#BSUB -o prog.out.%J.out;#BSUB -e prog.out.%J.err; OMP_NUM_THREADS=1 mpirun -n 1 ./prog.out ;OMP_NUM_THREADS=1 mpirun -n 2 ./prog.out ;OMP_NUM_THREADS=1 mpirun -n 4 ./prog.out ;OMP_NUM_THREADS=1 mpirun -n 8 ./prog.out ;OMP_NUM_THREADS=1 mpirun -n 16 ./prog.out ;OMP_NUM_THREADS=1 mpirun -n 32 ./prog.out ;OMP_NUM_THREADS=1 mpirun -n 64 ./prog.out ;OMP_NUM_THREADS=1 mpirun -n 80 ./prog.out > in cluster <MSUCluster> Done
+
+Job <source /polusfs/setenv/setup.SMPI;#BSUB -n 80;#BSUB -W 00:15;#BSUB -o prog.out.%J.out;#BSUB -e prog.out.%J.err; OMP_NUM_THREADS=1 mpirun -n 1 ./prog.out ;OMP_NUM_THREADS=1 mpirun -n 2 ./prog.out ;OMP_NUM_THREADS=1 mpirun -n 4 ./prog.out ;OMP_NUM_THREADS=1 mpirun -n 8 ./prog.out ;OMP_NUM_THREADS=1 mpirun -n 16 ./prog.out ;OMP_NUM_THREADS=1 mpirun -n 32 ./prog.out ;OMP_NUM_THREADS=1 mpirun -n 64 ./prog.out ;OMP_NUM_THREADS=1 mpirun -n 80 ./prog.out > was submitted from host <polus-ib.bmc.hpc.cs.msu.ru> by user <edu-cmc-skpod21-321-13> in cluster <MSUCluster> at Sun Dec 12 20:23:40 2021
+Job was executed on host(s) <20*polus-c1-ib.bmc.hpc.cs.msu.ru>, in queue <short>, as user <edu-cmc-skpod21-321-13> in cluster <MSUCluster> at Sun Dec 12 20:28:04 2021
+                            <20*polus-c4-ib.bmc.hpc.cs.msu.ru>
+                            <20*polus-c3-ib.bmc.hpc.cs.msu.ru>
+                            <20*polus-c2-ib.bmc.hpc.cs.msu.ru>
+</home_edu/edu-cmc-skpod21-321/edu-cmc-skpod21-321-13> was used as the home directory.
+</home_edu/edu-cmc-skpod21-321/edu-cmc-skpod21-321-13/MPI> was used as the working directory.
+Started at Sun Dec 12 20:28:04 2021
+Terminated at Sun Dec 12 20:39:39 2021
+Results reported at Sun Dec 12 20:39:39 2021
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+source /polusfs/setenv/setup.SMPI
+#BSUB -n 80
+#BSUB -W 00:15
+#BSUB -o prog.out.%J.out
+#BSUB -e prog.out.%J.err
+
+OMP_NUM_THREADS=1 mpirun -n 1 ./prog.out 
+OMP_NUM_THREADS=1 mpirun -n 2 ./prog.out 
+OMP_NUM_THREADS=1 mpirun -n 4 ./prog.out 
+OMP_NUM_THREADS=1 mpirun -n 8 ./prog.out 
+OMP_NUM_THREADS=1 mpirun -n 16 ./prog.out 
+OMP_NUM_THREADS=1 mpirun -n 32 ./prog.out 
+OMP_NUM_THREADS=1 mpirun -n 64 ./prog.out 
+OMP_NUM_THREADS=1 mpirun -n 80 ./prog.out 
+
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   3043.65 sec.
+    Max Memory :                                 1113 MB
+    Average Memory :                             229.73 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              24
+    Max Threads :                                69
+    Run time :                                   698 sec.
+    Turnaround time :                            959 sec.
+
+The output (if any) follows:
+
+Processes number: 1, Segment number: 262144, execution time, 0.327950, result: 39.8671121783
+Processes number: 1, Segment number: 524288, execution time, 0.656633, result: 39.8671121783
+Processes number: 1, Segment number: 1048576, execution time, 1.310421, result: 39.8671121783
+Processes number: 1, Segment number: 2097152, execution time, 2.629641, result: 39.8671121783
+Processes number: 1, Segment number: 4194304, execution time, 5.268416, result: 39.8671121783
+Processes number: 1, Segment number: 8388608, execution time, 10.555650, result: 39.8671121783
+Processes number: 1, Segment number: 16777216, execution time, 21.040122, result: 39.8671121783
+Processes number: 1, Segment number: 33554432, execution time, 42.198699, result: 39.8671121783
+Processes number: 1, Segment number: 67108864, execution time, 84.286347, result: 39.8671121783
+Processes number: 1, Segment number: 134217728, execution time, 168.609523, result: 39.8671121783
+Processes number: 2, Segment number: 262144, execution time, 0.166070, result: 39.8671121783
+Processes number: 2, Segment number: 524288, execution time, 0.331769, result: 39.8671121783
+Processes number: 2, Segment number: 1048576, execution time, 0.664210, result: 39.8671121783
+Processes number: 2, Segment number: 2097152, execution time, 1.328247, result: 39.8671121783
+Processes number: 2, Segment number: 4194304, execution time, 2.657356, result: 39.8671121783
+Processes number: 2, Segment number: 8388608, execution time, 5.325095, result: 39.8671121783
+Processes number: 2, Segment number: 16777216, execution time, 10.610695, result: 39.8671121783
+Processes number: 2, Segment number: 33554432, execution time, 21.239742, result: 39.8671121783
+Processes number: 2, Segment number: 67108864, execution time, 42.470787, result: 39.8671121783
+Processes number: 2, Segment number: 134217728, execution time, 84.988913, result: 39.8671121783
+Processes number: 4, Segment number: 262144, execution time, 0.085317, result: 39.8671121783
+Processes number: 4, Segment number: 524288, execution time, 0.169891, result: 39.8671121783
+Processes number: 4, Segment number: 1048576, execution time, 0.339475, result: 39.8671121783
+Processes number: 4, Segment number: 2097152, execution time, 0.679324, result: 39.8671121783
+Processes number: 4, Segment number: 4194304, execution time, 1.357464, result: 39.8671121783
+Processes number: 4, Segment number: 8388608, execution time, 2.719023, result: 39.8671121783
+Processes number: 4, Segment number: 16777216, execution time, 5.458965, result: 39.8671121783
+Processes number: 4, Segment number: 33554432, execution time, 10.941135, result: 39.8671121783
+Processes number: 4, Segment number: 67108864, execution time, 21.871273, result: 39.8671121783
+Processes number: 4, Segment number: 134217728, execution time, 43.704909, result: 39.8671121783
+Processes number: 8, Segment number: 262144, execution time, 0.075583, result: 39.8671121783
+Processes number: 8, Segment number: 524288, execution time, 0.099644, result: 39.8671121783
+Processes number: 8, Segment number: 1048576, execution time, 0.176422, result: 39.8671121783
+Processes number: 8, Segment number: 2097152, execution time, 0.352668, result: 39.8671121783
+Processes number: 8, Segment number: 4194304, execution time, 0.705600, result: 39.8671121783
+Processes number: 8, Segment number: 8388608, execution time, 1.409962, result: 39.8671121783
+Processes number: 8, Segment number: 16777216, execution time, 2.832022, result: 39.8671121783
+Processes number: 8, Segment number: 33554432, execution time, 5.663009, result: 39.8671121783
+Processes number: 8, Segment number: 67108864, execution time, 11.294044, result: 39.8671121783
+Processes number: 8, Segment number: 134217728, execution time, 22.575583, result: 39.8671121783
+Processes number: 16, Segment number: 262144, execution time, 0.054123, result: 39.8671121783
+Processes number: 16, Segment number: 524288, execution time, 0.098029, result: 39.8671121783
+Processes number: 16, Segment number: 1048576, execution time, 0.133775, result: 39.8671121783
+Processes number: 16, Segment number: 2097152, execution time, 0.180699, result: 39.8671121783
+Processes number: 16, Segment number: 4194304, execution time, 0.361102, result: 39.8671121783
+Processes number: 16, Segment number: 8388608, execution time, 0.772280, result: 39.8671121783
+Processes number: 16, Segment number: 16777216, execution time, 1.443980, result: 39.8671121783
+Processes number: 16, Segment number: 33554432, execution time, 2.905526, result: 39.8671121783
+Processes number: 16, Segment number: 67108864, execution time, 5.770288, result: 39.8671121783
+Processes number: 16, Segment number: 134217728, execution time, 11.562660, result: 39.8671121783
+Processes number: 32, Segment number: 262144, execution time, 0.035109, result: 39.8671121783
+Processes number: 32, Segment number: 524288, execution time, 0.066451, result: 39.8671121783
+Processes number: 32, Segment number: 1048576, execution time, 0.096927, result: 39.8671121783
+Processes number: 32, Segment number: 2097152, execution time, 0.135766, result: 39.8671121783
+Processes number: 32, Segment number: 4194304, execution time, 0.184072, result: 39.8671121783
+Processes number: 32, Segment number: 8388608, execution time, 0.479644, result: 39.8671121783
+Processes number: 32, Segment number: 16777216, execution time, 0.848728, result: 39.8671121783
+Processes number: 32, Segment number: 33554432, execution time, 1.644224, result: 39.8671121783
+Processes number: 32, Segment number: 67108864, execution time, 3.315596, result: 39.8671121783
+Processes number: 32, Segment number: 134217728, execution time, 6.134384, result: 39.8671121783
+Processes number: 64, Segment number: 262144, execution time, 0.018073, result: 39.8671121783
+Processes number: 64, Segment number: 524288, execution time, 0.032424, result: 39.8671121783
+Processes number: 64, Segment number: 1048576, execution time, 0.064791, result: 39.8671121783
+Processes number: 64, Segment number: 2097152, execution time, 0.128995, result: 39.8671121783
+Processes number: 64, Segment number: 4194304, execution time, 0.112323, result: 39.8671121783
+Processes number: 64, Segment number: 8388608, execution time, 0.183912, result: 39.8671121783
+Processes number: 64, Segment number: 16777216, execution time, 0.422881, result: 39.8671121783
+Processes number: 64, Segment number: 33554432, execution time, 0.842396, result: 39.8671121783
+Processes number: 64, Segment number: 67108864, execution time, 1.751335, result: 39.8671121783
+Processes number: 64, Segment number: 134217728, execution time, 3.009522, result: 39.8671121783
+Processes number: 80, Segment number: 262144, execution time, 0.014820, result: 39.8671121783
+Processes number: 80, Segment number: 524288, execution time, 0.026374, result: 39.8671121783
+Processes number: 80, Segment number: 1048576, execution time, 0.052675, result: 39.8671121783
+Processes number: 80, Segment number: 2097152, execution time, 0.105366, result: 39.8671121783
+Processes number: 80, Segment number: 4194304, execution time, 0.178491, result: 39.8671121783
+Processes number: 80, Segment number: 8388608, execution time, 0.176853, result: 39.8671121783
+Processes number: 80, Segment number: 16777216, execution time, 0.318304, result: 39.8671121783
+Processes number: 80, Segment number: 33554432, execution time, 0.665078, result: 39.8671121783
+Processes number: 80, Segment number: 67108864, execution time, 1.213878, result: 39.8671121783
+Processes number: 80, Segment number: 134217728, execution time, 2.506335, result: 39.8671121785
