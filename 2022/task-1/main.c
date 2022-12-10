@@ -31,7 +31,7 @@ void pass_cs(){
 /**
  * Возможные состояния процесса
  */
-enum states {IDLE, REQUESTS, CS};
+enum states {IDLE, REQUESTS, CS, WAITING};
 
 /**
  * Структура под маркер
@@ -59,7 +59,6 @@ int main(int argc, char** argv){
     /**
      * Создание структуры для маркера
      */
-    const int nitems = 2;
     int blocklengths[2] = {PROC_COUNT, QUEUE_LENGTH};
     MPI_Datatype Marker_Datatype;
     MPI_Datatype types[2] = {MPI_INT, MPI_INT};
@@ -131,7 +130,7 @@ int main(int argc, char** argv){
         /**
          * Запрошен вход в критическую секцию
          */
-        if (current_state == REQUESTS){
+        if ((current_state == REQUESTS) || (current_state == WAITING)){
             /**
              * Есть маркер
              */
@@ -180,13 +179,16 @@ int main(int argc, char** argv){
              * Нет маркера
              */
             else{
-                RN[rank]++;
-                Sn = RN[rank];
-                for (int i = 0; i < numtasks; i++){
-                    if (i != rank) {
-                        MPI_Send(&Sn, 1, MPI_INT, i, SN_TAG, MPI_COMM_WORLD);
-                        printf("Процесс %d послал Sn = %d процессу %d\n", rank, Sn, i);
+                if (current_state == REQUESTS){
+                    RN[rank]++;
+                    Sn = RN[rank];
+                    for (int i = 0; i < numtasks; i++) {
+                        if (i != rank) {
+                            MPI_Send(&Sn, 1, MPI_INT, i, SN_TAG, MPI_COMM_WORLD);
+                            printf("Процесс %d послал Sn = %d процессу %d\n", rank, Sn, i);
+                        }
                     }
+                    current_state = WAITING;
                 }
             }
         }
