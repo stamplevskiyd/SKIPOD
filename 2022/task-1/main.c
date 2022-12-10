@@ -39,7 +39,8 @@ struct Marker{
 
 int main(int argc, char** argv){
     int numtasks, rank;
-    int tag, marker_owner, Sn;
+    int marker_owner;
+    int Sn;
     const int root = 0;
     MPI_Status status;
     MPI_Request request = MPI_REQUEST_NULL;
@@ -49,6 +50,7 @@ int main(int argc, char** argv){
     int RN[numtasks];
     int finished_all;
     int finished_current;
+    bool has_marker;
 
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &numtasks);
@@ -96,56 +98,46 @@ int main(int argc, char** argv){
     }
     MPI_Bcast(&marker_owner, 1, MPI_INT, root, MPI_COMM_WORLD);
     printf("Маркер у %d, я процесс номер %d\n", marker_owner, rank);
+    has_marker = (rank == marker_owner);
     MPI_Barrier(MPI_COMM_WORLD); // ожидаем завершения инициализации всех процессов
 
     /**
      * Основной этап работы
      */
     while(true){
-        //sleep(1);
-//        printf("\nПроцесс %d\n", rank);
-//        for (int i = 0; i < numtasks; i++){
-//            printf("%d ", RN[i]);
-//        }
-//        printf("\n");
-//        for (int i = 0; i < requests_length; i++){
-//            printf("%d ", marker_requests[i]);
-//        }
-//        printf("\n");
-//        if (current_state == IDLE){
-//            printf("Процесс %d, владелец маркера %d прошел секцию Да\n", rank, marker_owner);
-//        }
-//        else{
-//            printf("Процесс %d, владелец маркера %d прошел секцию Нет\n", rank, marker_owner);
-//        }
+        sleep(1);
         /**
          * Получение сообщений
          */
-        MPI_Iprobe(MPI_ANY_SOURCE, tag, MPI_COMM_WORLD, &got_message, &status);
-        MPI_Get_count(&status, MPI_INT, &elem_count);
-        printf("Получено: %d, Число элементов %d\n", got_message, elem_count);
+        MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &got_message, &status);
 
-        /**
-         * Получено Sn
-         */
-        if (got_message && elem_count == 1){
-            MPI_Recv(&Sn, 1, MPI_INT, MPI_ANY_SOURCE, tag, MPI_COMM_WORLD, &status);
-            RN[status.MPI_SOURCE] = (RN[status.MPI_SOURCE] > Sn) ? RN[status.MPI_SOURCE] : Sn;
-            printf("Процесс %d получил Sn = %d от процесса %d\n", rank, Sn, status.MPI_SOURCE);
-            if (rank == marker_owner){
-                if (RN[status.MPI_SOURCE] == marker.LN[status.MPI_SOURCE] + 1){
-                    MPI_Send(&marker, 1, Marker_Datatype, status.MPI_SOURCE, tag, MPI_COMM_WORLD);
-                    printf("Процесс %d отправил маркер процессу %d\n", rank, status.MPI_SOURCE);
+        if (got_message){
+            printf("Процесс %d получил сообщение от процесса %d\n", rank, status.MPI_SOURCE);
+            MPI_Get_count(&status, MPI_INT, &elem_count);
+
+            /**
+             * Получено Sn
+             */
+            if (elem_count == 1){
+                MPI_Recv(&Sn, 1, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+                RN[status.MPI_SOURCE] = (RN[status.MPI_SOURCE] > Sn) ? RN[status.MPI_SOURCE] : Sn;
+                printf("Процесс %d получил Sn = %d от процесса %d\n", rank, Sn, status.MPI_SOURCE);
+                if (has_marker){
+                    if (RN[status.MPI_SOURCE] == marker.LN[status.MPI_SOURCE] + 1){
+                        has_marker = false;
+                        MPI_Send(&marker, 1, Marker_Datatype, status.MPI_SOURCE, 1, MPI_COMM_WORLD);
+                        printf("Процесс %d отправил маркер процессу %d\n", rank, status.MPI_SOURCE);
+                    }
                 }
             }
-        }
-        /**
-         * Получен маркер
-         */
-        else if (got_message){
-            MPI_Recv(&marker, 1, Marker_Datatype, MPI_ANY_SOURCE, tag, MPI_COMM_WORLD, &status);
-            marker_owner = rank;
-            printf("Процесс %d получил маркер от процесса %d\n", rank, status.MPI_SOURCE);
+            /**
+             * Получен маркер
+             */
+            else{
+                MPI_Recv(&marker, 1, Marker_Datatype, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+                has_marker = true;
+                printf("Процесс %d получил маркер от процесса %d\n", rank, status.MPI_SOURCE);
+            }
         }
 
         /**
@@ -155,11 +147,10 @@ int main(int argc, char** argv){
             /**
              * Есть маркер
              */
-            if (rank == marker_owner){
+            if (has_marker){
                 printf("Процесс %d начал критическую секцию\n", rank);
                 current_state = CS;
                 pass_cs();
-                current_state = IDLE;
                 marker.LN[rank] = RN[rank];
                 /**
                  * Добавление процессов в очередь
@@ -168,9 +159,10 @@ int main(int argc, char** argv){
                     if (RN[i] == marker.LN[i] + 1){
                         int j = 0;
                         while (true){
-                            if (marker.queue[j] != 0){
+                            if (marker.queue[j] == i)
+                                break;
+                            else if (marker.queue[j] != 0)
                                 j++;
-                            }
                             else{
                                 marker.queue[j] = i;
                                 break;
@@ -183,15 +175,16 @@ int main(int argc, char** argv){
                  * Очередь непуста, передаем маркер
                  */
                 if (marker.queue[0] != 0){
-                    int receiver = marker.queue[0];
-                    marker_owner = receiver;
+                    int marker_receiver = marker.queue[0];
                     for (int i = 0; i < QUEUE_LENGTH - 1; i++){
                         marker.queue[i] = marker.queue[i + 1];
                     }
-                    MPI_Send(&marker, 1, Marker_Datatype, receiver, tag, MPI_COMM_WORLD);
+                    has_marker = false;
+                    MPI_Send(&marker, 1, Marker_Datatype, marker_receiver, 1, MPI_COMM_WORLD);
+                    printf("Процесс %d отправил маркер процессу %d\n", rank, status.MPI_SOURCE);
                 }
-
-                printf("Процесс %d прошел критическую секцию\n", rank);
+                current_state = IDLE;
+                printf("Процесс %d закончил критическую секцию\n", rank);
             }
 
             /**
@@ -202,16 +195,15 @@ int main(int argc, char** argv){
                 Sn = RN[rank];
                 for (int i = 0; i < numtasks; i++){
                     if (i != rank) {
-                        MPI_Send(&Sn, 1, MPI_INT, i, tag, MPI_COMM_WORLD);
+                        MPI_Send(&Sn, 1, MPI_INT, i, 1, MPI_COMM_WORLD);
+                        printf("Процесс %d послал Sn = %d процессу %d\n", rank, Sn, i);
                     }
                 }
-                printf("Процесс %d разослал Sn = %d всем\n", rank, Sn);
             }
         }
 
         finished_current = (current_state == IDLE) ? 1 : 0;
-        MPI_Reduce(&finished_current, &finished_all, 1, MPI_INT, MPI_SUM, 0,MPI_COMM_WORLD);
-        printf("\nЧисло отработавших процессов %d\n", finished_current);
+        MPI_Allreduce(&finished_current, &finished_all, 1, MPI_INT, MPI_SUM,MPI_COMM_WORLD);
         if (finished_all == numtasks)
             break;
     }
