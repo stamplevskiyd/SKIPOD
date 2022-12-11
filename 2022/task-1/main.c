@@ -95,6 +95,11 @@ int main(int argc, char** argv){
      */
     while(true){
         //sleep(1);
+//        if (has_marker){
+//            for (int i = 1; i < 10; i++)
+//                printf("%d ", marker.queue[i]);
+//            printf("\n");
+//        }
 
         /**
          * Получение всех Sn
@@ -128,71 +133,83 @@ int main(int argc, char** argv){
         }
 
         /**
-         * Запрошен вход в критическую секцию
+         * Запрос входа в критическую секцию
          */
-        if ((current_state == REQUESTS) || (current_state == WAITING)){
+         if (current_state == REQUESTS){
+             if (has_marker) {
+                 printf("Процесс %d начал критическую секцию\n", rank);
+                 current_state = CS;
+                 pass_cs();
+             }
+             else{
+                 RN[rank]++;
+                 Sn = RN[rank];
+                 for (int i = 0; i < numtasks; i++) {
+                     if (i != rank) {
+                         MPI_Send(&Sn, 1, MPI_INT, i, SN_TAG, MPI_COMM_WORLD);
+                         printf("Процесс %d послал Sn = %d процессу %d\n", rank, Sn, i);
+                     }
+                 }
+                 current_state = WAITING;
+              }
+         }
+
+         /**
+          * Запрос отправлен, ждем маркер
+          */
+         else if (current_state == WAITING) {
+             if (has_marker) {
+                 printf("Процесс %d начал критическую секцию\n", rank);
+                 current_state = CS;
+                 pass_cs();
+             }
+         }
+
+        /**
+         * Выход из критической секции
+         */
+        else if (current_state == CS){
+            marker.LN[rank] = RN[rank];
+
             /**
-             * Есть маркер
+             * Добавление процессов в очередь
              */
-            if (has_marker){
-                printf("Процесс %d начал критическую секцию\n", rank);
-                current_state = CS;
-                pass_cs();
-                marker.LN[rank] = RN[rank];
-                /**
-                 * Добавление процессов в очередь
-                 */
-                for (int i = 0; i < numtasks; i++){
-                    if (RN[i] == marker.LN[i] + 1){
-                        int j = 0;
-                        while (true){
-                            if (marker.queue[j] == i)
-                                break;
-                            else if (marker.queue[j] != EMPTY_CELL)
-                                j++;
-                            else{
-                                marker.queue[j] = i;
-                                break;
-                            }
+            for (int i = 0; i < numtasks; i++){
+                if (RN[i] == marker.LN[i] + 1){
+                    int j = 0;
+                    while (true){
+                        if (marker.queue[j] == i)
+                            break;
+                        else if (marker.queue[j] != EMPTY_CELL)
+                            j++;
+                        else{
+                            marker.queue[j] = i;
+                            break;
                         }
                     }
                 }
-
-                /**
-                 * Очередь непуста, передаем маркер
-                 */
-                if (marker.queue[0] != EMPTY_CELL){
-                    int marker_receiver = marker.queue[0];
-                    for (int i = 0; i < QUEUE_LENGTH - 1; i++){
-                        marker.queue[i] = marker.queue[i + 1];
-                    }
-                    marker.queue[QUEUE_LENGTH - 1] = EMPTY_CELL;
-                    has_marker = false;
-                    MPI_Send(&marker, 1, Marker_Datatype, marker_receiver, MARKER_TAG, MPI_COMM_WORLD);
-                    printf("Процесс %d отправил маркер процессу %d\n", rank, status.MPI_SOURCE);
-                }
-                current_state = IDLE;
-                printf("Процесс %d закончил критическую секцию\n", rank);
             }
 
             /**
-             * Нет маркера
+             * Очередь непуста, передаем маркер
              */
-            else{
-                if (current_state == REQUESTS){
-                    RN[rank]++;
-                    Sn = RN[rank];
-                    for (int i = 0; i < numtasks; i++) {
-                        if (i != rank) {
-                            MPI_Send(&Sn, 1, MPI_INT, i, SN_TAG, MPI_COMM_WORLD);
-                            printf("Процесс %d послал Sn = %d процессу %d\n", rank, Sn, i);
-                        }
-                    }
-                    current_state = WAITING;
+            if (marker.queue[0] != EMPTY_CELL){
+                int marker_receiver = marker.queue[0];
+                for (int i = 0; i < QUEUE_LENGTH - 1; i++){
+                    marker.queue[i] = marker.queue[i + 1];
                 }
+                marker.queue[QUEUE_LENGTH - 1] = EMPTY_CELL;
+                has_marker = false;
+                MPI_Send(&marker, 1, Marker_Datatype, marker_receiver, MARKER_TAG, MPI_COMM_WORLD);
+                printf("Процесс %d отправил маркер процессу %d\n", rank, status.MPI_SOURCE);
             }
+            current_state = IDLE;
+            printf("Процесс %d закончил критическую секцию\n", rank);
         }
 
+        /**
+         * Проверяем, все ли прошли критическую секцию
+         */
         finished_current = (current_state == IDLE) ? 1 : 0;
         MPI_Allreduce(&finished_current, &finished_all, 1, MPI_INT, MPI_SUM,MPI_COMM_WORLD);
         if (finished_all == numtasks)
