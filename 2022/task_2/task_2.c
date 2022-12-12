@@ -23,46 +23,45 @@ int MPIX_Comm_replace(MPI_Comm comm, MPI_Comm *newcomm) {
     int rc, flag, rflag, i, nc, ns, nd, crank, srank, drank;
 
     redo:
-    if( comm == MPI_COMM_NULL ) { /* am I a new process? */
+    if (comm == MPI_COMM_NULL) { /* am I a new process? */
         /* I am a new spawnee, waiting for my new rank assignment
          * it will be sent by rank 0 in the old world */
         MPI_Comm_get_parent(&icomm);
         scomm = MPI_COMM_WORLD;
         MPI_Recv(&crank, 1, MPI_INT, 0, 1, icomm, MPI_STATUS_IGNORE);
-        if( verbose ) {
+        if (verbose) {
             MPI_Comm_rank(scomm, &srank);
             printf("Spawnee %d: crank=%d\n", srank, crank);
         }
-    }
-    else {
+    } else {
         /* I am a survivor: Spawn the appropriate number
          * of replacement processes (we check that this operation worked
-         * before we procees further) */
+         * before we process further) */
         /* First: remove dead processes */
         MPIX_Comm_shrink(comm, &scomm);
         MPI_Comm_size(scomm, &ns);
         MPI_Comm_size(comm, &nc);
-        nd = nc-ns; /* number of deads */
-        if( 0 == nd ) {
+        nd = nc - ns; /* number of deads */
+        if (0 == nd) {
             /* Nobody was dead to start with. We are done here */
             MPI_Comm_free(&scomm);
             *newcomm = comm;
             return MPI_SUCCESS;
         }
         /* We handle failures during this function ourselves... */
-        MPI_Comm_set_errhandler( scomm, MPI_ERRORS_RETURN );
+        MPI_Comm_set_errhandler(scomm, MPI_ERRORS_RETURN);
 
         rc = MPI_Comm_spawn(gargv[0], &gargv[1], nd, MPI_INFO_NULL,
                             0, scomm, &icomm, MPI_ERRCODES_IGNORE);
         flag = (MPI_SUCCESS == rc);
         MPIX_Comm_agree(scomm, &flag);
-        if( !flag ) {
-            if( MPI_SUCCESS == rc ) {
+        if (!flag) {
+            if (MPI_SUCCESS == rc) {
                 MPIX_Comm_revoke(icomm);
                 MPI_Comm_free(&icomm);
             }
             MPI_Comm_free(&scomm);
-            if( verbose ) fprintf(stderr, "%04d: comm_spawn failed, redo\n", rank);
+            if (verbose) fprintf(stderr, "%04d: comm_spawn failed, redo\n", rank);
             goto redo;
         }
 
@@ -72,35 +71,37 @@ int MPIX_Comm_replace(MPI_Comm comm, MPI_Comm *newcomm) {
         MPI_Comm_rank(scomm, &srank);
         /* the rank 0 in the scomm comm is going to determine the
          * ranks at which the spares need to be inserted. */
-        if(0 == srank) {
+        if (0 == srank) {
             /* getting the group of dead processes:
              *   those in comm, but not in scomm are the deads */
             MPI_Comm_group(comm, &cgrp);
             MPI_Comm_group(scomm, &sgrp);
             MPI_Group_difference(cgrp, sgrp, &dgrp);
             /* Computing the rank assignment for the newly inserted spares */
-            for(i=0; i<nd; i++) {
+            for (i = 0; i < nd; i++) {
                 MPI_Group_translate_ranks(dgrp, 1, &i, cgrp, &drank);
                 /* sending their new assignment to all new procs */
                 MPI_Send(&drank, 1, MPI_INT, i, 1, icomm);
             }
-            MPI_Group_free(&cgrp); MPI_Group_free(&sgrp); MPI_Group_free(&dgrp);
+            MPI_Group_free(&cgrp);
+            MPI_Group_free(&sgrp);
+            MPI_Group_free(&dgrp);
         }
     }
 
     /* Merge the intercomm, to reconstruct an intracomm (we check
      * that this operation worked before we proceed further) */
     rc = MPI_Intercomm_merge(icomm, 1, &mcomm);
-    rflag = flag = (MPI_SUCCESS==rc);
+    rflag = flag = (MPI_SUCCESS == rc);
     MPIX_Comm_agree(scomm, &flag);
-    if( MPI_COMM_WORLD != scomm ) MPI_Comm_free(&scomm);
+    if (MPI_COMM_WORLD != scomm) MPI_Comm_free(&scomm);
     MPIX_Comm_agree(icomm, &rflag);
     MPI_Comm_free(&icomm);
-    if( !(flag && rflag) ) {
-        if( MPI_SUCCESS == rc ) {
+    if (!(flag && rflag)) {
+        if (MPI_SUCCESS == rc) {
             MPI_Comm_free(&mcomm);
         }
-        if( verbose ) fprintf(stderr, "%04d: Intercomm_merge failed, redo\n", rank);
+        if (verbose) fprintf(stderr, "%04d: Intercomm_merge failed, redo\n", rank);
         goto redo;
     }
 
@@ -112,22 +113,22 @@ int MPIX_Comm_replace(MPI_Comm comm, MPI_Comm *newcomm) {
     /* Split or some of the communications above may have failed if
      * new failures have disrupted the process: we need to
      * make sure we succeeded at all ranks, or retry until it works. */
-    flag = (MPI_SUCCESS==rc);
+    flag = (MPI_SUCCESS == rc);
     MPIX_Comm_agree(mcomm, &flag);
     MPI_Comm_free(&mcomm);
-    if( !flag ) {
-        if( MPI_SUCCESS == rc ) {
-            MPI_Comm_free( newcomm );
+    if (!flag) {
+        if (MPI_SUCCESS == rc) {
+            MPI_Comm_free(newcomm);
         }
-        if( verbose ) fprintf(stderr, "%04d: comm_split failed, redo\n", rank);
+        if (verbose) fprintf(stderr, "%04d: comm_split failed, redo\n", rank);
         goto redo;
     }
 
     /* restore the error handler */
-    if( MPI_COMM_NULL != comm ) {
+    if (MPI_COMM_NULL != comm) {
         MPI_Errhandler errh;
-        MPI_Comm_get_errhandler( comm, &errh );
-        MPI_Comm_set_errhandler( *newcomm, errh );
+        MPI_Comm_get_errhandler(comm, &errh);
+        MPI_Comm_set_errhandler(*newcomm, errh);
     }
 
     return MPI_SUCCESS;
@@ -156,16 +157,23 @@ double integral(double l, double r, int segnum) // вычисляет интег
 int main( int argc, char* argv[] ) {
     MPI_Comm world; /* a world comm for the work, w/o the spares */
     MPI_Comm rworld; /* and a temporary handle to store the repaired copy */
-    int np, victim, spare;
-    int rc; /* error code from MPI functions */
-    char estr[MPI_MAX_ERROR_STRING]=""; int strl; /* error messages */
-    double start, tff=0, twf=0; /* timings */
-    int was_error, ret_code;
+
+    int np, spare;
+    int ret_code; /* error code from MPI functions */
+    char estr[MPI_MAX_ERROR_STRING] = "";
+    int strl; /* error messages */
+    double start, tff = 0, twf = 0; /* timings */
+    int was_error;
+
+    double l = A, r = B;
+    double h;
+    long int segnum;
+    double local_res, local_r, local_l;
+    double res;
+    double timer;
 
     gargv = argv;
     MPI_Init(&argc, &argv);
-//    if( !strcmp( argv[argc-1], "-v" ) ) verbose=1;
-
 
     /* Am I a spare ? */
     MPI_Comm_get_parent( &world );
@@ -184,28 +192,14 @@ int main( int argc, char* argv[] ) {
         MPI_Comm_rank( world, &rank );
         /* We set an errhandler on world, so that a failure is not fatal anymore. */
         MPI_Comm_set_errhandler( world, MPI_ERRORS_RETURN );
-        //goto joinwork;
     }
 
-
-    double l = A, r = B;
-    double h;
-    long int segnum;
-    double local_res, local_r, local_l;
-    double res;
-    double timer;
-
-    int randres;
-
-    timer = MPI_Wtime();
-
-    srand(time(NULL));
+    srand(time(NULL) + rank);
 
     while(1){
         ///Choosing victims
-        randres = rand() % 5;
-        if ((randres == 0) && rank != 0) {
-            printf("Process %d: committing suicide\n", rank);
+        if ((rand() % 10 == 1) && rank != 0) {
+            printf("Rank %04d: committing suicide\n", rank);
             raise(SIGKILL);
         }
 
@@ -216,20 +210,19 @@ int main( int argc, char* argv[] ) {
         local_r = local_l + h;
         local_res = integral(local_l, local_r, segnum);
 
-        ret_code = MPI_Allreduce(&local_res, &res, 1, MPI_DOUBLE, MPI_SUM, world); // складываем все результаты и передаем процессу 0
+        ///Processing errors
+        ret_code = MPI_Barrier(world);
         if (ret_code != MPI_SUCCESS) {
-            printf("%d\n", ret_code);
             printf("Error happen, restarting process %d\n", rank);
             MPIX_Comm_replace(world, &rworld);
             MPI_Comm_free(&world);
             world = rworld;
-        }
-        else
+        } else {
+            MPI_Reduce(&local_res, &res, 1, MPI_DOUBLE, MPI_SUM, 0, world); // складываем все результаты и передаем процессу 0
             break;
+        }
     }
 
-    MPI_Barrier(world);
-    timer = MPI_Wtime() - timer;
     MPI_Comm_free(&world);
 
     if (rank == 0) {

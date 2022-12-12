@@ -157,7 +157,13 @@ double integral(double l, double r, int segnum) // вычисляет интег
 int main( int argc, char* argv[] ) {
     MPI_Comm world; /* a world comm for the work, w/o the spares */
     MPI_Comm rworld; /* and a temporary handle to store the repaired copy */
-    int np, ret_code;
+
+    int np, spare;
+    int ret_code; /* error code from MPI functions */
+    char estr[MPI_MAX_ERROR_STRING] = "";
+    int strl; /* error messages */
+    double start, tff = 0, twf = 0; /* timings */
+    int was_error;
 
     double l = A, r = B;
     double h;
@@ -169,24 +175,24 @@ int main( int argc, char* argv[] ) {
     gargv = argv;
     MPI_Init(&argc, &argv);
 
-
     /* Am I a spare ? */
     MPI_Comm_get_parent( &world );
     if( MPI_COMM_NULL == world ) {
         /* First run: Let's create an initial world,
          * a copy of MPI_COMM_WORLD */
         MPI_Comm_dup( MPI_COMM_WORLD, &world );
+        MPI_Comm_size( world, &np );
+        MPI_Comm_rank( world, &rank );
+        /* We set an errhandler on world, so that a failure is not fatal anymore. */
+        MPI_Comm_set_errhandler( world, MPI_ERRORS_RETURN );
     } else {
         /* I am a spare, lets get the repaired world */
         MPIX_Comm_replace( MPI_COMM_NULL, &world );
+        MPI_Comm_size( world, &np );
+        MPI_Comm_rank( world, &rank );
+        /* We set an errhandler on world, so that a failure is not fatal anymore. */
+        MPI_Comm_set_errhandler( world, MPI_ERRORS_RETURN );
     }
-
-    MPI_Comm_size( world, &np );
-    MPI_Comm_rank( world, &rank );
-    /* We set an errhandler on world, so that a failure is not fatal anymore. */
-    MPI_Comm_set_errhandler( world, MPI_ERRORS_RETURN );
-
-    timer = MPI_Wtime();
 
     srand(time(NULL) + rank);
 
@@ -205,19 +211,18 @@ int main( int argc, char* argv[] ) {
         local_res = integral(local_l, local_r, segnum);
 
         ///Processing errors
-        ret_code = MPI_Allreduce(&local_res, &res, 1, MPI_DOUBLE, MPI_SUM, world); // складываем все результаты и передаем процессу 0
+        ret_code = MPI_Barrier(world);
         if (ret_code != MPI_SUCCESS) {
             printf("Error happen, restarting process %d\n", rank);
             MPIX_Comm_replace(world, &rworld);
             MPI_Comm_free(&world);
             world = rworld;
-        }
-        else
+        } else {
+            MPI_Reduce(&local_res, &res, 1, MPI_DOUBLE, MPI_SUM, 0, world); // складываем все результаты и передаем процессу 0
             break;
+        }
     }
 
-    MPI_Barrier(world);
-    timer = MPI_Wtime() - timer;
     MPI_Comm_free(&world);
 
     if (rank == 0) {
