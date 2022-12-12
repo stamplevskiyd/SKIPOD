@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <mpi.h>
-#include <time.h>
 #include <stdbool.h>
 #include <unistd.h>
 
@@ -15,17 +14,24 @@
 /**
  * Выполнить критическую секцию
  */
-void pass_cs(){
+void pass_cs(int proc_num){
+    printf("Процесс %d начал критическую секцию\n", proc_num);
+    FILE *f;
+    const char *filename = "critical.txt";
+    f = fopen(filename, "rb+");
+    if (!f){
+        printf("Процесс %d: файл не существует\n", proc_num);
+        f = fopen(filename, "w");
         srand(0);
-        if (false) {
-            ;
-            ;
-        }
-        else{
-            ;
-            sleep(1);
-            ;
-        }
+        sleep(rand() % 3 + 1); // от 0 до 1 секунды с шагом 0.1с
+        remove(filename);
+    }
+    else{
+        printf("Процесс %d: файл существует, ОШИБКА\n", proc_num);
+        perror("File exists");
+        exit(1);
+    }
+    printf("Процесс %d покинул критическую секцию\n", proc_num);
 };
 
 /**
@@ -94,12 +100,6 @@ int main(int argc, char** argv){
      * Основной этап работы
      */
     while(true){
-        //sleep(1);
-//        if (has_marker){
-//            for (int i = 1; i < 10; i++)
-//                printf("%d ", marker.queue[i]);
-//            printf("\n");
-//        }
 
         /**
          * Получение всех Sn
@@ -137,9 +137,8 @@ int main(int argc, char** argv){
          */
          if (current_state == REQUESTS){
              if (has_marker) {
-                 printf("Процесс %d начал критическую секцию\n", rank);
                  current_state = CS;
-                 pass_cs();
+                 pass_cs(rank);
              }
              else{
                  RN[rank]++;
@@ -159,9 +158,8 @@ int main(int argc, char** argv){
           */
          else if (current_state == WAITING) {
              if (has_marker) {
-                 printf("Процесс %d начал критическую секцию\n", rank);
                  current_state = CS;
-                 pass_cs();
+                 pass_cs(rank);
              }
          }
 
@@ -204,7 +202,6 @@ int main(int argc, char** argv){
                 printf("Процесс %d отправил маркер процессу %d\n", rank, status.MPI_SOURCE);
             }
             current_state = IDLE;
-            printf("Процесс %d закончил критическую секцию\n", rank);
         }
 
         /**
