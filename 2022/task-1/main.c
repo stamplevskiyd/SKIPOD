@@ -19,8 +19,7 @@ void pass_cs(int proc_num){
     if (!f){
         printf("Process %d: file does not exist\n", proc_num);
         f = fopen(filename, "w");
-        srand(0);
-        sleep(rand() % 3 + 1);
+        sleep(2);
         remove(filename);
     }
     else{
@@ -88,11 +87,11 @@ int main(int argc, char** argv){
      * Main work loop
      */
     while(true){
-
+        fflush(stdout);
         /**
          * Getting Sn's
          */
-        while(true) {
+        while(true && current_state != CS) {
             MPI_Iprobe(MPI_ANY_SOURCE, SN_TAG, MPI_COMM_WORLD, &got_message, &status);
             if (got_message) {
                 sender = status.MPI_SOURCE;
@@ -101,7 +100,7 @@ int main(int argc, char** argv){
                 printf("Process %d got Sn = %d from process %d\n", rank, Sn, sender);
                 if (has_marker && (RN[sender] == marker.LN[sender] + 1)) {
                     has_marker = false;
-                    MPI_Isend(&marker, 1, Marker_Datatype, sender, MARKER_TAG, MPI_COMM_WORLD, &request);
+                    MPI_Send(&marker, 1, Marker_Datatype, sender, MARKER_TAG, MPI_COMM_WORLD);
                     printf("Process %d sent marker to %d\n", rank, sender);
                 }
             }
@@ -113,7 +112,7 @@ int main(int argc, char** argv){
          * Getting marker
          */
         MPI_Iprobe(MPI_ANY_SOURCE, MARKER_TAG, MPI_COMM_WORLD, &got_message, &status);
-        if (got_message){
+        if (got_message && current_state != CS){
             sender = status.MPI_SOURCE;
             MPI_Recv(&marker, 1, Marker_Datatype, MPI_ANY_SOURCE, MARKER_TAG, MPI_COMM_WORLD, &status);
             has_marker = true;
@@ -179,8 +178,8 @@ int main(int argc, char** argv){
                 }
                 marker.queue[QUEUE_LENGTH - 1] = EMPTY_CELL;
                 has_marker = false;
-                MPI_Isend(&marker, 1, Marker_Datatype, marker_receiver, MARKER_TAG, MPI_COMM_WORLD, &request);
-                printf("Process %d sent marker to process %d\n", rank, status.MPI_SOURCE);
+                MPI_Send(&marker, 1, Marker_Datatype, marker_receiver, MARKER_TAG, MPI_COMM_WORLD);
+                printf("Process %d sent marker to process %d\n", rank, marker_receiver);
             }
             current_state = IDLE;
         }
