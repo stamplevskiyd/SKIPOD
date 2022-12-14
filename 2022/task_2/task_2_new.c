@@ -36,7 +36,6 @@ double integral(double l, double r, int segnum) // вычисляет интег
     return res;
 }
 
-unsigned error_occured = 0;
 MPI_Comm main_comm;
 
 static void err_handler(MPI_Comm *comm, int *err, ...) {

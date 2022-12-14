@@ -134,10 +134,10 @@ int MPIX_Comm_replace(MPI_Comm comm, MPI_Comm *newcomm) {
     return MPI_SUCCESS;
 }
 
-double integral(double l, double r, int segnum) // вычисляет интеграл с заданным числом сегментов
+double integral(double l, double r, int segnum)
 {
     double res = 0, F_l, F_r, F_mid;
-    double step_size = (r - l) / (double) segnum; // на каждом сегменте есть промежуточная точка в середине. эти точки за границы сегмента не считаем
+    double step_size = (r - l) / (double) segnum;
     int i;
     double x_l = l, x_r = x_l + step_size, x_mid = x_l + (step_size) / 2.0;
     for (i = 0; i < segnum; i++)
@@ -150,7 +150,7 @@ double integral(double l, double r, int segnum) // вычисляет интег
         x_mid += step_size;
         x_r += step_size;
     }
-    res *= step_size / 6.0; //возможно, увеличит точность, так как не будем каждый раз делить результат и складывать очень маленькие числа (риск переполнения очень мал)
+    res *= step_size / 6.0;
     return res;
 }
 
@@ -218,12 +218,13 @@ int main( int argc, char* argv[] ) {
             MPI_Comm_free(&world);
             world = rworld;
         } else {
-            MPI_Reduce(&local_res, &res, 1, MPI_DOUBLE, MPI_SUM, 0, world); // складываем все результаты и передаем процессу 0
+            MPI_Reduce(&local_res, &res, 1, MPI_DOUBLE, MPI_SUM, 0, world);
             break;
         }
     }
 
     MPI_Comm_free(&world);
+    timer = MPI_Wtime() - timer;
 
     if (rank == 0) {
         printf("Processes number: %d, execution time, %.6f, result: %.10f\n", np, timer, res);
