@@ -28,7 +28,7 @@ void pass_cs(int proc_num){
         perror("File exists");
         exit(1);
     }
-    printf("Process %d lest CS\n", proc_num);
+    printf("Process %d left CS\n", proc_num);
 };
 
 enum states {IDLE, REQUESTS, CS, WAITING};
@@ -43,6 +43,7 @@ int main(int argc, char** argv){
     const int root = 0;
     bool has_marker;
     MPI_Status status;
+    MPI_Request request;
     enum states current_state = REQUESTS;
     int got_message;
     struct Marker marker;
@@ -100,7 +101,7 @@ int main(int argc, char** argv){
                 printf("Process %d got Sn = %d from process %d\n", rank, Sn, sender);
                 if (has_marker && (RN[sender] == marker.LN[sender] + 1)) {
                     has_marker = false;
-                    MPI_Send(&marker, 1, Marker_Datatype, sender, MARKER_TAG, MPI_COMM_WORLD);
+                    MPI_Isend(&marker, 1, Marker_Datatype, sender, MARKER_TAG, MPI_COMM_WORLD, &request);
                     printf("Process %d sent marker to %d\n", rank, sender);
                 }
             }
@@ -132,7 +133,7 @@ int main(int argc, char** argv){
                  Sn = RN[rank];
                  for (int i = 0; i < numtasks; i++) {
                      if (i != rank) {
-                         MPI_Send(&Sn, 1, MPI_INT, i, SN_TAG, MPI_COMM_WORLD);
+                         MPI_Isend(&Sn, 1, MPI_INT, i, SN_TAG, MPI_COMM_WORLD, &request);
                          printf("Process %d sent Sn = %d to process %d\n", rank, Sn, i);
                      }
                  }
@@ -178,7 +179,7 @@ int main(int argc, char** argv){
                 }
                 marker.queue[QUEUE_LENGTH - 1] = EMPTY_CELL;
                 has_marker = false;
-                MPI_Send(&marker, 1, Marker_Datatype, marker_receiver, MARKER_TAG, MPI_COMM_WORLD);
+                MPI_Isend(&marker, 1, Marker_Datatype, marker_receiver, MARKER_TAG, MPI_COMM_WORLD, &request);
                 printf("Process %d sent marker to process %d\n", rank, status.MPI_SOURCE);
             }
             current_state = IDLE;
